@@ -55,7 +55,7 @@ LVK = {
         print(LVK.Colorize(msg))
     end,
 
-    PrintDebug = function(msg, ...)
+    Debug = function(msg, ...)
         if not LVK.debug then
             return
         end
