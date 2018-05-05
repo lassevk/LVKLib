@@ -1,0 +1,7 @@
+## Interface: 70300
+## Title: LVKLib
+## Notes: 
+## Author: Lasse Vågsæther Karlsen
+## Version: 0.10.0
+## DefaultState: Enabled
+LVKLib.lua
