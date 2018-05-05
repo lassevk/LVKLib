@@ -183,10 +183,12 @@ function LVK:Loaded()
 end
 
 function LVK:ADDON_LOADED(addon)
-    if addon == "LVKLib" then
-        LVK:Loaded()
-        self:UnregisterEvent("ADDON_LOADED")
+    if addon ~= "LVKLib" then
+        return
     end
+
+    LVK:Loaded()
+    self:UnregisterEvent("ADDON_LOADED")
 end
 
 function LVK:Init()
