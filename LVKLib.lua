@@ -55,15 +55,22 @@ LVK = {
         print(LVK.Colorize(msg))
     end,
 
-    Debug = function(msg, ...)
+    DebugPrint = function(msg, ...)
         if not LVK.debug then
             return
         end
-        LVK.Print(msg, ...)
+        LVK.Print("|y|DEBUG: |<|" .. msg, ...)
     end,
 
     PrintAddonLoaded = function(addon)
         LVK.Print("|y|%s|<| version |g|%s|<| loaded", GetAddOnMetadata(addon, "Title"), GetAddOnMetadata(addon, "Version") .. "|<|")
+    end,
+
+    DebugDump = function(obj, name)
+        if not LVK.debug then
+            return
+        end
+        LVK.Dump(obj, LVK.Colorize("|y|DEBUG: |<|" .. name))
     end,
 
     Dump = function(obj, name)
