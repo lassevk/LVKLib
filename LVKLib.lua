@@ -66,7 +66,7 @@ LVK = {
         LVK.Print(msg)
     end,
 
-    Dump = function(obj)
+    Dump = function(obj, name)
         local formatString = function(str)
             local output = ""
             for i = 1, #str do
@@ -147,7 +147,7 @@ LVK = {
             end
         end
 
-        dump(obj, "value", "")
+        dump(obj, name or "value", "")
     end,
 
     Test = function()
