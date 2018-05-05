@@ -4,4 +4,5 @@
 ## Author: Lasse Vågsæther Karlsen
 ## Version: 0.10.0
 ## DefaultState: Enabled
+## SavedVariables: LVKSavedData
 LVKLib.lua
