@@ -15,7 +15,7 @@ LVK = {
         ["<"] = "|r"
     },
 
-    Format = function(msg)
+    Colorize = function(msg)
         local result = ""
         local i = 1
         local oldI = 0
@@ -48,22 +48,22 @@ LVK = {
         return result
     end,
 
-    Print = function(msg)
-        print(LVK.Format(msg))
+    Print = function(msg, ...)
+        if #{...} > 0 then
+            msg = string.format(msg, ...)
+        end
+        print(LVK.Colorize(msg))
     end,
 
-    PrintDebug = function(msg)
+    PrintDebug = function(msg, ...)
         if not LVK.debug then
             return
         end
-        LVK.Print(msg)
+        LVK.Print(msg, ...)
     end,
 
     PrintAddonLoaded = function(addon)
-        local msg = "|y|" .. GetAddOnMetadata(addon, "Title") .. "|<|"
-        msg = msg .. " version |g|" .. GetAddOnMetadata(addon, "Version") .. "|<|"
-        msg = msg .. " loaded"
-        LVK.Print(msg)
+        LVK.Print("|y|%s|<| version |g|%s|<| loaded", GetAddOnMetadata(addon, "Title"), GetAddOnMetadata(addon, "Version") .. "|<|")
     end,
 
     Dump = function(obj, name)
@@ -107,18 +107,18 @@ LVK = {
 
         local dumpers = {
             ["string"] = function(prefix, str, indent)
-                LVK.Print(prefix .. " = " .. formatString(str))
+                LVK.Print("%s = %s", prefix, formatString(str))
             end,
             ["number"] = function(prefix, num, indent)
                 if num == math.floor(num) then
-                    LVK.Print(prefix .. " = " .. tostring(num) .. " (0x" .. string.format("%x", num) .. ")")
+                    LVK.Print("%s = %d (0x%x)", prefix, num, num)
                 else
-                    LVK.Print(prefix .. " = " .. tostring(num))
+                    LVK.Print("%s = %f", prefix, num)
                 end
             end,
             ["table"] = function(prefix, tbl, indent)
                 LVK.Print(prefix)
-                LVK.Print(indent:sub(1, #indent - 2) .. "{")
+                LVK.Print("%s{", indent:sub(1, #indent - 2))
                 local any = false
                 for key, value in pairs(tbl) do
                     dump(value, toString(key), indent .. "  ")
@@ -129,7 +129,7 @@ LVK = {
                         dump(value, toString(key), indent .. "  ")
                     end
                 end
-                LVK.Print(indent:sub(1, #indent - 2) .. "}")
+                LVK.Print("%s}", indent:sub(1, #indent - 2))
             end,
         }
 
@@ -137,13 +137,13 @@ LVK = {
             if type(name) ~= "string" then
                 name = tostring(name)
             end
-            local prefix = indent .. name .. ": " .. type(obj)
+            local prefix = string.format("%s%s: %s", indent, name, type(obj))
 
             dumper = dumpers[type(obj)]
             if dumper ~= nil then
                 dumper(prefix, obj, indent .. "  ")
             else
-                LVK.Print(prefix .. " = " .. tostring(obj))
+                LVK.Print("%s = %s", prefix, tostring(obj))
             end
         end
 
@@ -158,7 +158,7 @@ LVK = {
                 return ""
             end,
             ["d"] = {
-                1, 2, 3,
+                1, 2, 3, 4.5, 
                 {
                     ["a"] = 17,
                     ["b"] = "test"
